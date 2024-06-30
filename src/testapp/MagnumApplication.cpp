@@ -29,6 +29,7 @@
 #include <Magnum/PixelFormat.h>
 
 #include <toml.hpp>
+#include <iostream>
 
 #include "osp/util/ExecutablePath.h"
 
@@ -120,14 +121,15 @@ void testapp::config_controls(UserInputHandler& rUserInput)
 {
     // Configure Controls
     //Load toml
-    std::string const appPath = osp::filefunctions::get_exe_dir();
-    if ( ! std::filesystem::exists(appPath + "settings.toml")) 
+    std::filesystem::path settingsFile = std::filesystem::path{osp::filefunctions::s_exe_dir} / "settings.toml";
+    std::cerr << settingsFile << std::endl << osp::filefunctions::s_exe_dir << std::endl;
+    if ( ! std::filesystem::exists(settingsFile)) 
     {
         OSP_LOG_ERROR("Failed to find settings.toml");
         return;
     }
 
-    auto data = toml::parse(appPath + "settings.toml"); 
+    auto data = toml::parse(settingsFile); 
     for (const auto& [k, v] : data.as_table())
     {
         std::string const& primary = toml::find(v, "primary").as_string();

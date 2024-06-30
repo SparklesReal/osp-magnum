@@ -44,15 +44,15 @@ FullscreenTriShader::FullscreenTriShader()
 {
     GL::Shader vert{GL::Version::GL430, GL::Shader::Type::Vertex};
     GL::Shader frag{GL::Version::GL430, GL::Shader::Type::Fragment};
-    std::string const appPath = osp::filefunctions::get_exe_dir();
-    if ( ! std::filesystem::exists(appPath + "OSPData/adera/Shaders/FullscreenTri.vert")
-    || ! std::filesystem::exists(appPath + "OSPData/adera/Shaders/FullscreenTri.frag"))
+    std::filesystem::path appPath = std::filesystem::path{osp::filefunctions::s_exe_dir};
+    if ( ! std::filesystem::exists(appPath / "OSPData/adera/Shaders/FullscreenTri.vert")
+    || ! std::filesystem::exists(appPath / "OSPData/adera/Shaders/FullscreenTri.frag"))
     {
         OSP_LOG_ERROR("Failed to find OSPData/adera/Shaders/FullscreenTri.vert or OSPData/adera/Shaders/FullscreenTri.frag");
         return;
     }
-    vert.addFile(appPath + "OSPData/adera/Shaders/FullscreenTri.vert");
-    frag.addFile(appPath + "OSPData/adera/Shaders/FullscreenTri.frag");
+    vert.addFile(appPath.string() + "OSPData/adera/Shaders/FullscreenTri.vert");
+    frag.addFile(appPath.string() + "OSPData/adera/Shaders/FullscreenTri.frag");
 
     CORRADE_INTERNAL_ASSERT_OUTPUT(vert.compile() && frag.compile());
     attachShaders({vert, frag});
